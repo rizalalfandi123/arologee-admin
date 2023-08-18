@@ -1,0 +1,25 @@
+{
+  "search": "Search",
+  "sidebar": {
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "finance": "Finance",
+    "user": "User",
+    "user-verification": "User Verification",
+    "user-list": "User List",
+    "watch": "Watch"
+  },
+  "user-verification-page": {
+    "user-overview": "User Overview",
+    "submission-totals": "Submission Totals",
+    "verified-user": "Verifield User",
+    "waiting-for-verification": "Waiting for Verification",
+    "data-user": "Data User"
+  },
+  "login-page": {
+    "login-admin": "Login Admin",
+    "your_email@mail.com": "your_email@mail.com",
+    "password_example": "password_example",
+    "remember-me": "Remember Me" 
+  }
+}
