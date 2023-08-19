@@ -28,16 +28,13 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
 
   const [visiblePassword, setVisiblePassword] = React.useState<boolean>(false);
 
-  const toogleVisiblePassword = () => setVisiblePassword(prev => !prev)
+  const toogleVisiblePassword = () => setVisiblePassword((prev) => !prev);
 
   const passwordFieldProps = React.useMemo(() => {
     if (visiblePassword) {
       return {
         button: (
-          <button
-            type="button"
-            onClick={toogleVisiblePassword}
-          >
+          <button type="button" onClick={toogleVisiblePassword}>
             <EyeOff />
           </button>
         ),
@@ -47,10 +44,7 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
 
     return {
       button: (
-        <button
-          type="button"
-          onClick={toogleVisiblePassword}
-        >
+        <button type="button" onClick={toogleVisiblePassword}>
           <Eye />
         </button>
       ),
@@ -68,7 +62,12 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
 
   const onSubmit: SubmitHandler<LoginForm> = (values) => {
     startTransition(async () => {
-      await loginAction(btoa(JSON.stringify(values)));
+      const res = await loginAction(btoa(JSON.stringify(values)));
+
+      if (res) {
+        form.setError("email", { message: res.error });
+        form.setError("password", { message: res.error });
+      }
     });
   };
 

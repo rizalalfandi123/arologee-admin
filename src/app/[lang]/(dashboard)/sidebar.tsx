@@ -48,11 +48,11 @@ export default function Sidebar(props: SidebarProps) {
   ];
 
   return (
-    <div className="w-full px-6 py-8 bg-sidebar h-full">
+    <div className="bg-sidebar p-0 h-full w-full md:px-6 md:py-8">
       <div className="w-full flex justify-between items-center mb-6">
         <Image src="/images/brand.svg" width={88} height={38} alt="brand" />
 
-        <ChevronsLeft />
+        {/* <ChevronsLeft /> */}
       </div>
 
       <h3 className="text-sidebar-foreground mb-4">{dictionaries.settings}</h3>

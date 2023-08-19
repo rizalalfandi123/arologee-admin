@@ -67,7 +67,7 @@ const SidebarButton: React.FunctionComponent<
       asChild
       variant="ghost"
       className={cn([
-        "w-full flex gap-4 justify-start",
+        "w-full flex gap-4 justify-start transition-[margin] hover:ml-2",
         { "bg-[#1D1D1F]": isActive },
         className,
       ])}
@@ -96,7 +96,7 @@ const SidebarButtonWithChildren: React.FunctionComponent<
       <Button
         variant="ghost"
         className={cn([
-          "w-full flex justify-between",
+          "w-full flex justify-between transition-[margin] hover:ml-2",
           { "bg-[#1D1D1F]": isActive && !isExpand },
         ])}
         onClick={toggleExpand}
@@ -112,7 +112,7 @@ const SidebarButtonWithChildren: React.FunctionComponent<
         />
       </Button>
       <div
-        className={cn(["w-[100%-20px] ml-10 space-y-3", { hidden: !isExpand }])}
+        className={cn(["w-[100%-20px] h-[98px] overflow-hidden ml-10 space-y-3 transition-all duration-500 pr-2", { "h-0 my-[0px!important]": !isExpand }])}
       >
         {children.map((item) => {
           return (

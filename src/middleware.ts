@@ -26,7 +26,7 @@ function getLocale(request: NextRequest): string | undefined {
 
 const verifyUserAuth = (request: NextRequest) => {
 
-  const isAuth = request.cookies.has("user");
+  const isAuth = request.cookies.has("auth");
 
 
   return isAuth

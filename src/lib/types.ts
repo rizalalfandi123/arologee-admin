@@ -8,3 +8,11 @@ export interface DictionaryProps {
 }
 
 export type Dictionaries = Awaited<ReturnType<typeof getDictionary>>
+
+export interface MetaResponse {
+  meta: {
+    code: number;
+    status: string;
+    message: string;
+  };
+}
