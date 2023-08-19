@@ -6,13 +6,18 @@ import { cn } from "@/lib/utlis";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   prefixIcon?: React.ReactNode;
+  suffixIcon?: React.ReactNode;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, prefixIcon, ...inputProps }, ref) => {
+  ({ className, suffixIcon, type, prefixIcon, ...inputProps }, ref) => {
     return (
       <div className="relative">
-        {prefixIcon && <Slot className="absolute top-[10px] left-2 w-5 h-5 text-placeholder">{prefixIcon}</Slot>}
+        {prefixIcon && (
+          <Slot className="absolute top-[10px] left-2 w-5 h-5 text-placeholder">
+            {prefixIcon}
+          </Slot>
+        )}
 
         <input
           type={type}
@@ -21,12 +26,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:outline-none",
             "file:border-0 file:bg-transparent file:text-sm file:font-medium",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            {'pl-10': prefixIcon},
+            { "pl-10": prefixIcon },
+            { "pr-10": prefixIcon },
             className
           )}
           ref={ref}
           {...inputProps}
         />
+
+        {suffixIcon && (
+          <Slot className="absolute top-[8px] right-3 w-5 h-5 text-placeholder">
+            {suffixIcon}
+          </Slot>
+        )}
       </div>
     );
   }

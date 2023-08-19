@@ -13,11 +13,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components";
-import { UserCircle, Lock, Loader2 } from "lucide-react";
+import { UserCircle, Lock, Loader2, EyeOff, Eye } from "lucide-react";
 import { Dictionaries } from "@/lib/types";
 import { LoginForm, loginFormSchema } from "./login-schema";
 import { loginAction } from "./login-action";
-import { cn } from "@/lib/utlis";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface LoginFormProps {
@@ -26,6 +25,38 @@ interface LoginFormProps {
 
 export default function LoginForm({ dictionaries }: LoginFormProps) {
   const [isPending, startTransition] = React.useTransition();
+
+  const [visiblePassword, setVisiblePassword] = React.useState<boolean>(false);
+
+  const toogleVisiblePassword = () => setVisiblePassword(prev => !prev)
+
+  const passwordFieldProps = React.useMemo(() => {
+    if (visiblePassword) {
+      return {
+        button: (
+          <button
+            type="button"
+            onClick={toogleVisiblePassword}
+          >
+            <EyeOff />
+          </button>
+        ),
+        type: "text",
+      };
+    }
+
+    return {
+      button: (
+        <button
+          type="button"
+          onClick={toogleVisiblePassword}
+        >
+          <Eye />
+        </button>
+      ),
+      type: "password",
+    };
+  }, [visiblePassword]);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginFormSchema),
@@ -72,6 +103,8 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
                 <Input
                   placeholder={dictionaries.password_example}
                   prefixIcon={<Lock />}
+                  type={passwordFieldProps.type}
+                  suffixIcon={passwordFieldProps.button}
                   {...field}
                 />
               </FormControl>
@@ -89,8 +122,6 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
             {dictionaries["remember-me"]}
           </label>
         </div>
-
-        
 
         <div className="w-full">
           <Button
