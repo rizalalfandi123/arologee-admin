@@ -9,6 +9,7 @@ import SummaryCard, {
 import { Input } from "@/components/ui/input";
 import SelectStatus from "./dropdown-status";
 import UserTable from "./user-table";
+import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 
 interface UserVerificationProps extends DictionaryProps {}
 
@@ -57,7 +58,10 @@ export default async function UserVerification(props: UserVerificationProps) {
 
         <div className="flex flex-col gap-2 lg:flex-row lg:justify-between">
           <Input placeholder={dictionaries["search"]} prefixIcon={<Search />} />
-          <Input placeholder={dictionaries["search"]} />
+
+
+
+          <DatePickerWithRange/>
 
           <SelectStatus />
         </div>

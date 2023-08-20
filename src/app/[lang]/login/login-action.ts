@@ -32,6 +32,7 @@ export async function loginAction(payload: string) {
   if (response.ok) {
     const responseJson: LoginResponse = await response.json();
 
+
     cookies().set("auth", JSON.stringify(responseJson.data), {
       httpOnly: true,
     });

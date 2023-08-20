@@ -26,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 focus-visible:outline-none",
             "file:border-0 file:bg-transparent file:text-sm file:font-medium",
             "disabled:cursor-not-allowed disabled:opacity-50",
-            "autofill:bg-[#2C2C2E]",
+            "autofill:bg-[#2C2C2E!important]",
             { "pl-10": prefixIcon },
             { "pr-10": prefixIcon },
             className
