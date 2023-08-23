@@ -37,7 +37,7 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
     },
   });
 
-  const { mutate: login } = useMutation<
+  const { mutate: login, isLoading: loading } = useMutation<
     AxiosResponse<LoginResponse>,
     AxiosError<unknown>,
     LoginForm
@@ -60,7 +60,6 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
     },
   });
 
-  const [isPending, startTransition] = React.useTransition();
 
   const [visiblePassword, setVisiblePassword] = React.useState<boolean>(false);
 
@@ -145,10 +144,10 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
           <Button
             type="submit"
             className="w-full mt-6 flex gap-2"
-            disabled={isPending}
+            disabled={loading}
           >
-            {isPending && <Loader2 className="animate-spin" />}
-            {isPending ? "Loading" : "Submit"}
+            {loading && <Loader2 className="animate-spin" />}
+            {loading ? "Loading" : "Submit"}
           </Button>
         </div>
       </form>
