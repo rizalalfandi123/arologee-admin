@@ -20,6 +20,7 @@
     "login-admin": "Masuk Admin",
     "your_email@mail.com": "email_kamu@mail.com",
     "password_example": "contoh_password",
-    "remember-me": "Ingat Saya" 
+    "remember-me": "Ingat Saya",
+    "incorrect-email-or-password": "Email atau password salah"
   }
 }

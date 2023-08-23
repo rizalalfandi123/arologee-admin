@@ -7,7 +7,7 @@ export interface DictionaryProps {
   params: { lang: Locale };
 }
 
-export type Dictionaries = Awaited<ReturnType<typeof getDictionary>>
+export type Dictionaries = Awaited<ReturnType<typeof getDictionary>>;
 
 export interface MetaResponse {
   meta: {
@@ -16,3 +16,14 @@ export interface MetaResponse {
     message: string;
   };
 }
+
+export type ApiResponse<T> = {
+  data: T;
+} & MetaResponse;
+
+export type LoginResponse = ApiResponse<{
+  refresh_token: string;
+  access_token: string;
+  is_vendor: boolean;
+  finished_registration: boolean;
+}>;

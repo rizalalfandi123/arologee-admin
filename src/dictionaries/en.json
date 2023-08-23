@@ -20,6 +20,7 @@
     "login-admin": "Login Admin",
     "your_email@mail.com": "your_email@mail.com",
     "password_example": "password_example",
-    "remember-me": "Remember Me" 
+    "remember-me": "Remember Me",
+    "incorrect-email-or-password": "Incorrect email or password"
   }
 }

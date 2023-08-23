@@ -3,6 +3,7 @@ import React from "react";
 import { DictionaryProps } from "@/lib/types";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import ClientProvider from "@/components/client-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +20,10 @@ interface RootLayoutProps extends React.PropsWithChildren, DictionaryProps {}
 export default async function RootLayout(props: RootLayoutProps) {
   const { children, params } = props;
 
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <ClientProvider>{children}</ClientProvider>
       </body>
     </html>
   );

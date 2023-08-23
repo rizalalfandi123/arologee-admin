@@ -3,6 +3,7 @@
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Cookies from "js-cookie";
 import {
   Form,
   FormControl,
@@ -14,16 +15,51 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components";
 import { UserCircle, Lock, Loader2, EyeOff, Eye } from "lucide-react";
-import { Dictionaries } from "@/lib/types";
+import { Dictionaries, LoginResponse } from "@/lib/types";
 import { LoginForm, loginFormSchema } from "./login-schema";
-import { loginAction } from "./login-action";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useMutation } from "react-query";
+import { http, type AxiosError, type AxiosResponse } from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 interface LoginFormProps {
   dictionaries: Dictionaries["login-page"];
 }
 
 export default function LoginForm({ dictionaries }: LoginFormProps) {
+  const router = useRouter();
+
+  const form = useForm<LoginForm>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const { mutate: login } = useMutation<
+    AxiosResponse<LoginResponse>,
+    AxiosError<unknown>,
+    LoginForm
+  >({
+    mutationKey: ["LOGIN"],
+    mutationFn: (data) => http.post("/admin/login", data),
+    onError: () => {
+      form.setError("email", {
+        message: dictionaries["incorrect-email-or-password"],
+      });
+
+      form.setError("password", {
+        message: dictionaries["incorrect-email-or-password"],
+      });
+    },
+    onSuccess: (response) => {
+      Cookies.set("auth", JSON.stringify(response.data.data));
+
+      router.push("/");
+    },
+  });
+
   const [isPending, startTransition] = React.useTransition();
 
   const [visiblePassword, setVisiblePassword] = React.useState<boolean>(false);
@@ -52,24 +88,7 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
     };
   }, [visiblePassword]);
 
-  const form = useForm<LoginForm>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  const onSubmit: SubmitHandler<LoginForm> = (values) => {
-    startTransition(async () => {
-      const res = await loginAction(btoa(JSON.stringify(values)));
-
-      if (res) {
-        form.setError("email", { message: res.error });
-        form.setError("password", { message: res.error });
-      }
-    });
-  };
+  const onSubmit: SubmitHandler<LoginForm> = (values) => login(values);
 
   return (
     <Form {...form}>
