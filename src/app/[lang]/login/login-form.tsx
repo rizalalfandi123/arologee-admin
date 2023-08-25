@@ -19,8 +19,10 @@ import { Dictionaries, LoginResponse } from "@/lib/types";
 import { LoginForm, loginFormSchema } from "./login-schema";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation } from "react-query";
-import { http, type AxiosError, type AxiosResponse } from "@/lib/axios";
+import { type AxiosError, type AxiosResponse } from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import getUnixTime from "date-fns/getUnixTime";
+import axios from "axios";
 
 interface LoginFormProps {
   dictionaries: Dictionaries["login-page"];
@@ -43,7 +45,7 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
     LoginForm
   >({
     mutationKey: ["LOGIN"],
-    mutationFn: (data) => http.post("/admin/login", data),
+    mutationFn: (data) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API}/admin/login`, data),
     onError: () => {
       form.setError("email", {
         message: dictionaries["incorrect-email-or-password"],
@@ -56,10 +58,13 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
     onSuccess: (response) => {
       Cookies.set("auth", JSON.stringify(response.data.data));
 
+      const now = getUnixTime(new Date());
+
+      Cookies.set("auth-last-update", now.toString());
+
       router.push("/");
     },
   });
-
 
   const [visiblePassword, setVisiblePassword] = React.useState<boolean>(false);
 

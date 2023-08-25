@@ -2,7 +2,7 @@ import "server-only";
 
 import { Search } from "lucide-react";
 import { getDictionary } from "@/lib/get-dictionary";
-import { DictionaryProps } from "@/lib/types";
+import { DictionaryProps, TotalRequestVerifiedResponse } from "@/lib/types";
 import SummaryCard, {
   type SummaryCardProps as SummaryCardItem,
 } from "./summary-card";
@@ -10,13 +10,27 @@ import { Input } from "@/components/ui/input";
 import SelectStatus from "./dropdown-status";
 import UserTable from "./user-table";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
+import { fetchApi } from "@/lib/fetch-api";
 
 interface UserVerificationProps extends DictionaryProps {}
+
+const getSummaryValues: () => Promise<
+  TotalRequestVerifiedResponse["data"]
+> = async () => {
+  const { data } = await fetchApi<TotalRequestVerifiedResponse>(
+    "/user/total-request-verified",
+    { method: "GET" }
+  );
+
+  return data;
+};
 
 export default async function UserVerification(props: UserVerificationProps) {
   const {
     params: { lang },
   } = props;
+
+  const summaryValues = await getSummaryValues();
 
   const dictionaries = await getDictionary(lang);
 
@@ -25,21 +39,23 @@ export default async function UserVerification(props: UserVerificationProps) {
   const summaryCards: Array<SummaryCardItem> = [
     {
       title: userVerificationDictionaries["submission-totals"],
-      value: 3,
+      value: summaryValues.total,
     },
     {
       title: userVerificationDictionaries["verified-user"],
-      value: 7,
+      value: summaryValues.total_approved,
     },
     {
       title: userVerificationDictionaries["waiting-for-verification"],
-      value: 3,
+      value: summaryValues.total_requested,
     },
     {
       title: userVerificationDictionaries["submission-totals"],
-      value: 10,
+      value: summaryValues.total_rejected,
     },
   ];
+
+  // console.log({ summaryCards });
 
   return (
     <div className="flex flex-col gap-4">
@@ -59,9 +75,7 @@ export default async function UserVerification(props: UserVerificationProps) {
         <div className="flex flex-col gap-2 lg:flex-row lg:justify-between">
           <Input placeholder={dictionaries["search"]} prefixIcon={<Search />} />
 
-
-
-          <DatePickerWithRange/>
+          <DatePickerWithRange className="w-full lg:w-[258px]" />
 
           <SelectStatus />
         </div>

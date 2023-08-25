@@ -1,11 +1,10 @@
 import "server-only";
 
 import Image from "next/image";
-import { Home, DollarSign, User2, Watch, MoreVerticalIcon } from "lucide-react";
+import { Home, DollarSign, User2, Watch } from "lucide-react";
 import { type Dictionaries } from "@/lib/types";
 import SidebarItem, { type ISidebarItem } from "./sidebar-item";
 import UserOptions from "./user-options";
-
 interface SidebarProps {
   dictionaries: Dictionaries["sidebar"];
 }

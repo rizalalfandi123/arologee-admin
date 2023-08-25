@@ -27,3 +27,10 @@ export type LoginResponse = ApiResponse<{
   is_vendor: boolean;
   finished_registration: boolean;
 }>;
+
+export type TotalRequestVerifiedResponse = ApiResponse<{
+  total: number;
+  total_requested: number;
+  total_rejected: number;
+  total_approved: number;
+}>;

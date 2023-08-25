@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
 import { i18n } from "./i18n-config";
 
 import { match as matchLocale } from "@formatjs/intl-localematcher";
@@ -24,19 +23,17 @@ function getLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
-const verifyUserAuth = (request: NextRequest) => {
-
+const verifyUserAuth = async (request: NextRequest) => {
   const isAuth = request.cookies.has("auth");
 
 
-  return isAuth
-  
+  return isAuth;
 };
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  const isAuth = verifyUserAuth(request);
+  const isAuth = await verifyUserAuth(request);
 
   if (!isAuth && !pathname.includes("/login")) {
     return NextResponse.redirect(new URL(`/login`, request.url));
