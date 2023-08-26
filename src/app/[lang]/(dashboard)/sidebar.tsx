@@ -78,7 +78,7 @@ export default function Sidebar(props: SidebarProps) {
           <p>Mclaren Steve</p>
         </div>
 
-        <UserOptions/>
+        <UserOptions />
       </div>
     </div>
   );

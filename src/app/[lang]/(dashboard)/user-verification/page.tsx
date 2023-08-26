@@ -1,16 +1,13 @@
 import "server-only";
 
-import { Search } from "lucide-react";
 import { getDictionary } from "@/lib/get-dictionary";
 import { DictionaryProps, TotalRequestVerifiedResponse } from "@/lib/types";
 import SummaryCard, {
   type SummaryCardProps as SummaryCardItem,
 } from "./summary-card";
-import { Input } from "@/components/ui/input";
-import SelectStatus from "./dropdown-status";
 import UserTable from "./user-table";
-import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { fetchApi } from "@/lib/fetch-api";
+import FilterList from "./filter-list";
 
 interface UserVerificationProps extends DictionaryProps {}
 
@@ -73,11 +70,12 @@ export default async function UserVerification(props: UserVerificationProps) {
         <p className="text-xl">{userVerificationDictionaries["data-user"]}</p>
 
         <div className="flex flex-col gap-2 lg:flex-row lg:justify-between">
-          <Input placeholder={dictionaries["search"]} prefixIcon={<Search />} />
-
-          <DatePickerWithRange className="w-full lg:w-[258px]" />
-
-          <SelectStatus />
+          <FilterList
+            dictionaries={{
+              ...dictionaries["user-verification-page"],
+              search: dictionaries.search,
+            }}
+          />
         </div>
       </div>
 

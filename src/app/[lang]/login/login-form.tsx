@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -95,7 +94,7 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
   const onSubmit: SubmitHandler<LoginForm> = (values) => login(values);
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
         <FormField
           control={form.control}
@@ -156,6 +155,6 @@ export default function LoginForm({ dictionaries }: LoginFormProps) {
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

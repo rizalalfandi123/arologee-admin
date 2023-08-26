@@ -34,8 +34,6 @@ export async function fetchApi<Response>(
 export async function refreshToken() {
   const token = getRefreshToken();
 
-  console.log("dlllllllllllllllllllllllllllll");
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API}/user/generate-access-token`,
     {

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { addDays, format } from "date-fns";
-import { DateRange } from "react-day-picker";
+import { type DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utlis";
 import { Button, ButtonProps } from "@/components/ui/button";
