@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -34,29 +35,41 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components";
 import { cn } from "@/lib/utlis";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebounce } from "@/lib/use-debounce";
+import { parse } from "date-fns";
 
 interface FilterListProps {
   dictionaries: Dictionaries["user-verification-page"] & { search: string };
 }
 
 export default function FilterList({ dictionaries }: FilterListProps) {
+  const searchParams = useSearchParams();
+
   const form = useForm<FilterUserVerification>({
     resolver: zodResolver(filterListSchema),
     defaultValues: {
-      search: "",
-      status: "1,2,3",
+      search: searchParams.get("search") ?? "",
+      status:
+        (searchParams.get("status") as FilterUserVerification["status"]) ??
+        "0,1,2",
       date: {
-        to: new Date(),
-        from: addDays(new Date(), -30),
+        to: searchParams.get("end_date")
+          ? parse(searchParams.get("end_date")!, "d-M-yyyy", new Date())
+          : new Date(),
+        from: searchParams.get("start_date")
+        ? parse(searchParams.get("start_date")!, "d-M-yyyy", new Date())
+        : addDays(new Date(), -30),
+        
       },
     },
   });
 
   const statusOptions: Record<FilterStatusUserVerification, string> = {
-    "1,2,3": "Semua",
-    "1": "Request Pengajuan",
-    "2": "Disetujui",
-    "3": "Ditolak",
+    "0,1,2": "Semua",
+    "0": "Request Pengajuan",
+    "1": "Disetujui",
+    "2": "Ditolak",
   };
   return (
     <>
@@ -173,26 +186,39 @@ const FilterListListener = ({
 }) => {
   const filterValues = useWatch({ control });
 
-  console.log({ filterValues });
+  const router = useRouter();
 
-  // const router = useRouter();
+  const pathname = usePathname();
 
-  // const pathname = usePathname();
+  const currentSearchParams = useSearchParams();
 
-  // const searchParams = useSearchParams();
+  const searchValue = useDebounce<string>(filterValues.search ?? "", 1000);
 
-  // const searchValue = useDebounce<string>(filterValues.search ?? "", 1000);
+  const newSearchParams = React.useMemo(() => {
+    const params = new URLSearchParams(currentSearchParams.toString());
 
-  // //   React.useEffect(() => {
-  // //     if ((searchParams.get("search") ?? "") !== searchValue) {
-  // //       router.replace(
-  // //         queryString.stringifyUrl({
-  // //           url: pathname,
-  // //           query: { search: searchValue },
-  // //         })
-  // //       );
-  // //     }
-  // //   }, [searchValue]);
+    if (searchValue) {
+      params.set("search", searchValue);
+    }
+
+    params.set("status", filterValues.status ?? "0,1,2");
+
+    if (filterValues.date?.to) {
+      params.set("end_date", format(filterValues.date.to, "d-M-yyyy"));
+    }
+
+    if (filterValues.date?.from) {
+      params.set("start_date", format(filterValues.date.from, "d-M-yyyy"));
+    }
+
+    return params;
+  }, [filterValues]);
+
+  React.useEffect(() => {
+    if (currentSearchParams.toString() !== newSearchParams.toString()) {
+      router.push(`${pathname}?${newSearchParams.toString()}`);
+    }
+  }, [newSearchParams.toString()]);
 
   return null;
 };

@@ -7,7 +7,7 @@ const badgeVariants = cva("rounded-full px-3 py-[6px] w-fit", {
   variants: {
     color: {
       success: "border border-success bg-[#1D5E2E]",
-      warning: "border border-warning bg-[#1D5E2E]",
+      warning: "border border-warning bg-[#89530A]",
       error: "border border-primary bg-[#A5170F]",
     },
   },
@@ -16,7 +16,7 @@ const badgeVariants = cva("rounded-full px-3 py-[6px] w-fit", {
   },
 });
 
-interface BadgeProps
+export interface BadgeProps
   extends Omit<React.ComponentProps<"div">, "color">,
     VariantProps<typeof badgeVariants> {
   asChild?: boolean;

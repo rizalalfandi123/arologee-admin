@@ -30,7 +30,7 @@ export default function Sidebar(props: SidebarProps) {
         {
           icon: null,
           label: dictionaries["user-verification"],
-          pathname: "/user-verification",
+          pathname: `/user-verification`,
         },
         {
           icon: null,

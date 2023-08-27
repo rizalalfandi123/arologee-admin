@@ -17,7 +17,7 @@ import { UserCircle, Lock, Loader2, EyeOff, Eye } from "lucide-react";
 import { Dictionaries, LoginResponse } from "@/lib/types";
 import { LoginForm, loginFormSchema } from "./login-schema";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { type AxiosError, type AxiosResponse } from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import getUnixTime from "date-fns/getUnixTime";

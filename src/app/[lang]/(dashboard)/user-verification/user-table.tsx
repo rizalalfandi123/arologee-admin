@@ -1,72 +1,145 @@
+"use client";
+
+import React from "react";
+import { Badge, BadgeProps } from "@/components/ui/badge";
+import { http } from "@/lib/axios";
+import { UserVerificationListResponse } from "@/lib/types";
+import { useQuery } from "@tanstack/react-query";
+import { type ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "@/components/data-table/data-table";
 import { Button } from "@/components";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { addDays, format } from "date-fns";
+
+type VerificationUser = UserVerificationListResponse["data"][number] & {
+  action: string;
+};
 
 export default function UserTable() {
+  const searchParams = useSearchParams();
+
+  const queryParams = React.useMemo(() => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("limit", "25");
+
+    if (!params.get("end_date")) {
+      params.set("end_date", format(new Date(), "d-M-yyyy"));
+    }
+
+    if (!params.get("start_date")) {
+      params.set("start_date", format(addDays(new Date(), -30), "d-M-yyyy"));
+    }
+
+    if (!params.get("status")) {
+      params.set("status", "0,1,2");
+    }
+
+    // if (searchParams.get("search")) {
+    //   params.search = searchParams.get("search")!;
+    // }
+
+    // if (searchParams.get("status")) {
+    //   params.status = searchParams.get("status")!;
+    // }
+
+    // if (searchParams.get("end_date")) {
+    //   params.search = searchParams.get("end_date")!;
+    // }
+
+    // if (searchParams.get("end_date")) {
+    //   params.search = searchParams.get("end_date")!;
+    // }
+
+    return params.toString();
+  }, [searchParams.toString()]);
+
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["USER_VERIFICATION_LIST", queryParams],
+
+    queryFn: async (data) => {
+      console.log({ data });
+      return http.get<UserVerificationListResponse>(
+        `/user/list-request-verified?${data.queryKey[1]}`
+      );
+    },
+
+    select: (response) => {
+      return (response.data.data || []).map((item) => ({
+        ...item,
+        action: `/user-verification/${item.id}`,
+      }));
+    },
+  });
+
+  console.log({ data });
+
+  const columns: ColumnDef<VerificationUser, string | number>[] = [
+    {
+      accessorKey: "created_at",
+      header: "Tanggal",
+      cell: (data) => {
+        const value = (data.getValue() as string).split(" ");
+
+        return (
+          <div className="flex flex-col gap-2">
+            <span>{value[0]}</span>
+            <span className="text-xs">{value[1]}</span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "name",
+      header: "Nama",
+    },
+    {
+      accessorKey: "phone_number",
+      header: "Contact",
+    },
+    {
+      accessorKey: "is_verified",
+      header: "Status",
+      cell: (data) => {
+        const status: { label: string; color: BadgeProps["color"] } =
+          (function () {
+            switch (data.getValue()) {
+              case 0: {
+                return { label: "Request", color: "warning" };
+              }
+
+              case 1: {
+                return { label: "Disetujui", color: "success" };
+              }
+
+              default: {
+                return { label: "Ditolak", color: "error" };
+              }
+            }
+          })();
+
+        return <Badge color={status.color}>{status.label}</Badge>;
+      },
+    },
+    {
+      accessorKey: "action",
+      header: "Verifikasi Ditolak",
+      cell: (data) => {
+        return (
+          <Button variant="link" asChild>
+            <Link href={data.getValue() as string}>Lihat Detail</Link>
+          </Button>
+        );
+      },
+    },
+  ];
+
+  // console.log({ data, queryParams });
+
   return (
     <div className="w-full max-h-[calc(100dvh-320px)] overflow-auto border border-[#48484A]">
-      <Table className="border-collapse relative">
-        <TableHeader className="sticky top-0">
-          <TableRow>
-            <TableHead className="border border-[#48484A] border-t-0">
-              Tanggal
-            </TableHead>
-            <TableHead className="border border-[#48484A] border-t-0">
-              Nama
-            </TableHead>
-            <TableHead className="border border-[#48484A] border-t-0">
-              Contact
-            </TableHead>
-            <TableHead className="border border-[#48484A] border-t-0">
-              Status
-            </TableHead>
-            <TableHead className="border border-[#48484A] border-t-0">
-              Verifikasi Ditolak
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody className="overflow-y-scroll">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].map((ang) => {
-            return (
-              <TableRow key={ang}>
-                <TableCell className="border border-[#48484A]">
-                  <div className="flex flex-col gap-2">
-                    <span>{ang} Juni 2023</span>
-                    <span className="text-xs">10:41 pm</span>
-                  </div>
-                </TableCell>
-                <TableCell className="border border-[#48484A]">
-                  <div className="flex flex-col gap-2">
-                    <span>Esther Howard</span>
-                    <span className="text-xs">tim.jennings@example.com</span>
-                  </div>
-                </TableCell>
-                <TableCell className="border border-[#48484A]">
-                  0812186458212
-                </TableCell>
-
-                <TableCell className="border border-[#48484A]">
-                  <Badge>Disetujui</Badge>
-                </TableCell>
-                <TableCell className="border border-[#48484A]">
-                  <Button variant="link" asChild>
-                    <Link href="/">Lihat Detail</Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <DataTable isInitialLoading={isLoading} columns={columns} data={data} />
     </div>
   );
 }

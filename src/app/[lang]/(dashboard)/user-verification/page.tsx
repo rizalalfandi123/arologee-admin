@@ -52,8 +52,6 @@ export default async function UserVerification(props: UserVerificationProps) {
     },
   ];
 
-  // console.log({ summaryCards });
-
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl p-2 font-semibold mb-2 md:p-6">

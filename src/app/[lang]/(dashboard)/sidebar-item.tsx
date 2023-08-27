@@ -6,11 +6,12 @@ import { Button, ButtonProps } from "@/components";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn, normalizePathname } from "@/lib/utlis";
+import { Url } from "next/dist/shared/lib/router/router";
 
 export interface ISidebarItemWithoutChildren {
   label: string;
   icon: React.ReactNode;
-  pathname: string;
+  pathname: Url;
 }
 
 export interface ISidebarItemWithChildren {
@@ -62,6 +63,8 @@ const SidebarButton: React.FunctionComponent<
 > = (props) => {
   const { label, icon, pathname, isActive, className, ...buttonProps } = props;
 
+  console.log({ pathname })
+
   return (
     <Button
       asChild
@@ -73,7 +76,7 @@ const SidebarButton: React.FunctionComponent<
       ])}
       {...buttonProps}
     >
-      <Link href={pathname} prefetch>
+      <Link href={pathname} as={pathname} prefetch>
         {icon} {label}
       </Link>
     </Button>

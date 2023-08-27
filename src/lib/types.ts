@@ -34,3 +34,14 @@ export type TotalRequestVerifiedResponse = ApiResponse<{
   total_rejected: number;
   total_approved: number;
 }>;
+
+export type UserVerificationListResponse = ApiResponse<
+  Array<{
+    id: number;
+    name: string;
+    email: string;
+    phone_number: string;
+    is_verified: 1 | 2;
+    created_at: string;
+  }>
+>;
