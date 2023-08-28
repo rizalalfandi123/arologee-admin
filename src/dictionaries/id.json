@@ -1,26 +1,26 @@
 {
-  "search": "Cari",
-  "sidebar": {
-    "settings": "Pengaturan",
-    "dashboard": "Dasbor",
-    "finance": "Keuangan",
-    "user": "Pengguna",
-    "user-verification": "Verifikasi Pengguna",
-    "user-list": "Daftar Pengguna",
-    "watch": "Jam Tangan"
-  },
-  "user-verification-page": {
-    "user-overview": "User Overview",
-    "submission-totals": "Total Pengajuan",
-    "verified-user": "User Terverifikasi",
-    "waiting-for-verification": "Menunggu Terverifikasi",
-    "data-user": "Data Pengguna"
-  },
-  "login-page": {
-    "login-admin": "Masuk Admin",
-    "your_email@mail.com": "email_kamu@mail.com",
-    "password_example": "contoh_password",
-    "remember-me": "Ingat Saya",
-    "incorrect-email-or-password": "Email atau password salah"
-  }
+   "search": "Cari",
+   "sidebar": {
+      "settings": "Pengaturan",
+      "dashboard": "Dasbor",
+      "finance": "Keuangan",
+      "user": "Pengguna",
+      "user-verification": "Verifikasi Pengguna",
+      "user-list": "Daftar Pengguna",
+      "watch": "Jam Tangan"
+   },
+   "user-verification-page": {
+      "user-overview": "User Overview",
+      "submission-totals": "Total Pengajuan",
+      "verified-user": "User Terverifikasi",
+      "waiting-for-verification": "Menunggu Terverifikasi",
+      "data-user": "Data Pengguna"
+   },
+   "login-page": {
+      "login-admin": "Masuk Admin",
+      "your_email@mail.com": "email_kamu@mail.com",
+      "password_example": "contoh_password",
+      "remember-me": "Ingat Saya",
+      "incorrect-email-or-password": "Email atau password salah"
+   }
 }

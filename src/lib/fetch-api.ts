@@ -3,52 +3,49 @@ import { LoginResponse } from "./types";
 import { redirect } from "next/navigation";
 
 interface FetchApiOptions {
-  method: "POST" | "GET";
+   method: "POST" | "GET";
+   next?: NextFetchRequestConfig
 }
 
-export async function fetchApi<Response>(
-  endpoint: string,
-  options: FetchApiOptions,
-  accessToken?: string
-) {
-  const token = getAccessToken();
+export async function fetchApi<Response>(endpoint: string, options: FetchApiOptions, accessToken?: string) {
+   const token = getAccessToken();
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}${endpoint}`, {
-    method: options.method,
-    headers: {
-      Authorization: accessToken ? `Bearer ${accessToken}` : `Bearer ${token}`,
-    },
-  });
+   console.log("sssssssssssssssssssss", `${process.env.NEXT_PUBLIC_BASE_API}${endpoint}`)
 
-  let resJson = await res.json();
+   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}${endpoint}`, {
+      method: options.method,
+      headers: {
+         Authorization: accessToken ? `Bearer ${accessToken}` : `Bearer ${token}`,
+      },
+      next: options.next
+   });
 
-  if (!res.ok && resJson.meta.code === 401) {
-    const newAccessToken = await refreshToken();
+   let resJson = await res.json();
 
-    return fetchApi(endpoint, options, newAccessToken.data.access_token);
-  }
+   if (!res.ok && resJson.meta.code === 401) {
+      const newAccessToken = await refreshToken();
 
-  return resJson as Response;
+      return fetchApi(endpoint, options, newAccessToken.data.access_token);
+   }
+
+   return resJson as Response;
 }
 
 export async function refreshToken() {
-  const token = getRefreshToken();
+   const token = getRefreshToken();
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/user/generate-access-token`,
-    {
+   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/generate-access-token`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+         Authorization: `Bearer ${token}`,
       },
-    }
-  );
+   });
 
-  if (res.ok) {
-    const resJson: LoginResponse = await res.json();
+   if (res.ok) {
+      const resJson: LoginResponse = await res.json();
 
-    return resJson;
-  } else {
-    return redirect("/login");
-  }
+      return resJson;
+   } else {
+      return redirect("/login");
+   }
 }

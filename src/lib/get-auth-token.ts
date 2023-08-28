@@ -4,29 +4,29 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const getAccessToken = () => {
-  const cookiesStore = cookies();
+   const cookiesStore = cookies();
 
-  const auth = cookiesStore.get("auth");
+   const auth = cookiesStore.get("auth");
 
-  if (!auth) {
-    return redirect("/login");
-  }
+   if (!auth) {
+      return redirect("/login");
+   }
 
-  const parseAuth = JSON.parse(auth.value);
+   const parseAuth = JSON.parse(auth.value);
 
-  return parseAuth.access_token as string;
+   return parseAuth.access_token as string;
 };
 
 export const getRefreshToken = () => {
-  const cookiesStore = cookies();
-  
-  const auth = cookiesStore.get("auth");
+   const cookiesStore = cookies();
 
-  if (!auth) {
-    return redirect("/login");
-  }
+   const auth = cookiesStore.get("auth");
 
-  const parseAuth = JSON.parse(auth.value);
+   if (!auth) {
+      return redirect("/login");
+   }
 
-  return parseAuth.refresh_token as string;
+   const parseAuth = JSON.parse(auth.value);
+
+   return parseAuth.refresh_token as string;
 };

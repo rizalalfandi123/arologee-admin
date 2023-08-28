@@ -5,20 +5,20 @@ import { Button } from "@/components";
 import { Menu } from "lucide-react";
 
 interface MobileSidebarProps {
-  dictionaries: Dictionaries["sidebar"];
+   dictionaries: Dictionaries["sidebar"];
 }
 
 export default function MobileSidebar(props: MobileSidebarProps) {
-  return (
-    <Sheet >
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon">
-            <Menu/>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="bg-sidebar">
-        <Sidebar dictionaries={props.dictionaries} />
-      </SheetContent>
-    </Sheet>
-  );
+   return (
+      <Sheet>
+         <SheetTrigger asChild>
+            <Button variant="ghost" size="icon">
+               <Menu />
+            </Button>
+         </SheetTrigger>
+         <SheetContent side="left" className="bg-sidebar">
+            <Sidebar dictionaries={props.dictionaries} />
+         </SheetContent>
+      </Sheet>
+   );
 }
